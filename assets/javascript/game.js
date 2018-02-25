@@ -154,7 +154,7 @@ function youWin() {
 $("#char-list").on("click", ".characters", function(event) {
     var clickedChar = $(this).data("number");
     //assigns the value of the number attribute of the specific clicked object (this) to clickedChar
-    Game.chosenChar.push(Game.charList[clickedchar]);
+    Game.chosenChar.push(Game.charList[clickedChar]);
     //pushes the object that was clicked on from the charList to the chosenChar array
     Game.charList.splice(clickedChar, 1);
     //takes out the clicked on character out of the charList
@@ -200,7 +200,14 @@ $("#attack-button").on("click", function(event) {
     //adds your characters attack power to your characters baseAttackPower to build power
     Game.chosenEnemy[0].hp -= Game.chosenChar[0].basePowerAttack;
     //subtracts your characters built up power attack from the chosen enemies hp
+    
+    var chosenCharHP = $('#chosen-char-hp');
+    var chosenEnemyHP = $('#chosen-enemy-hp');
+    chosenCharHP.text(Game.chosenChar[0].hp);
+    chosenEnemyHP.text(Game.chosenEnemy[0].hp);
+    
     enemyKilled();
+    
     if(Game.defeatedArr.length === 3) {
         youWin();
     }
@@ -208,6 +215,6 @@ $("#attack-button").on("click", function(event) {
 //on click event for the attack-button
 
 $(document).ready(function () {
-    window.alert("Choose an alien race to take over the world!");
     showAllCharacters();
+    window.alert("Choose an alien race to take over the world!");
 });
