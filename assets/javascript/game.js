@@ -122,12 +122,12 @@ function enemyKilled() {
         //pushes the defeated enemy into the defeatedArr
         
         if (Game.enemiesArr.length === 2) {
-            document.alert("You've conquered one alien race, can you conquer another?");
+            window.alert("You've conquered one alien race, can you conquer another?");
         }
         //displays when there are two enemies left
         
         if (Game.enemiesArr.length === 1) {
-            document.alert("You've conquered two alien races, can you become the master race?");
+            window.alert("You've conquered two alien races, can you become the master race?");
         }
         //displays when there is one enemy left
         
@@ -141,13 +141,13 @@ function enemyKilled() {
 
 function gameOver() {
     if (Game.chosenChar[0].hp <= 0) {
-        document.alert("You've failed to become the master race.");
+        window.alert("You've failed to become the master race.");
     }
 };
 //function is only run when the chosenChar has an hp value <= 0
     
 function youWin() {
-        document.alert("Congratulations, you've become the master race!")
+        window.alert("Congratulations, you've become the master race!")
 };
 //tells the player that they won
 
@@ -169,7 +169,7 @@ $("#char-list").on("click", ".characters", function(event) {
     //displays the character that the player chose to be
     showAllEnemies();
     //displays the characters that are available to choose to attack
-    document.alert("Chose an enemy to fight");
+    window.alert("Chose an enemy to fight");
     //tells player to pick an enemy
 });
 //on click event for the char-list div
@@ -188,12 +188,12 @@ $("#enemies-list").on("click", ".characters", function(event) {
     //displays the characters that are available to choose to attack
     showChosenEnemy();
     //displays the character that the player chose to fight
-    document.alert("Attack!");
+    window.alert("Attack!");
     //tells player to attack their enemy
 });
 //on click event for the enemies-list div
 
-$("attack-button").on("click", function(event) {
+$("#attack-button").on("click", function(event) {
     Game.chosenChar[0].hp -= Game.chosenEnemy[0].counterAttackPower;
     //subtracts the enemies counterAttackPower value from your chosen characters hp value
     Game.chosenChar[0].basePowerAttack += Game.chosenChar[0].attack;
@@ -206,3 +206,8 @@ $("attack-button").on("click", function(event) {
     }
 });
 //on click event for the attack-button
+
+$(document).ready(function () {
+    window.alert("Choose an alien race to take over the world!");
+    showAllCharacters();
+});
