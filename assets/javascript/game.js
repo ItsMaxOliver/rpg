@@ -1,6 +1,6 @@
 var tardis = {
         name : "T.A.R.D.I.S.",
-        hp : 180, 
+        hp : 100, 
         attack : 15,
         defense : 15,
         basePowerAttack : 15,
@@ -10,7 +10,7 @@ var tardis = {
     };
 var angel = {
         name : "Weeping Angel",
-        hp : 200, 
+        hp : 500, 
         attack : 15,
         defense : 15,
         basePowerAttack : 15,
@@ -47,8 +47,10 @@ var Game = {
     //holds the list of characters that the player can choose from to fight
     chosenEnemy : [],
     //holds the character that the player chooses to fight first
-    defeatedArr : []
+    defeatedArr : [],
     //holds the list of characters that the player has defeated
+    chosenCharHP : $('#chosen-char-hp'),
+    chosenEnemyHP : $('#chosen-enemy-hp')
 };
 
 function showAllCharacters() {
@@ -79,6 +81,7 @@ function showChosenChar() {
         chosenImage.addClass("characters");
         //adds a class for css purposes
         $("#chosen-char").append(chosenImage);
+        Game.chosenCharHP.text(Game.chosenChar[0].hp);
     }
 };
 //displays the character that the player chose to be
@@ -111,6 +114,7 @@ function showChosenEnemy() {
         enemyChosenImage.addClass("characters");
         //adds a class for css purposes
         $("#chosen-enemy").append(enemyChosenImage);
+        Game.chosenEnemyHP.text(Game.chosenEnemy[0].hp);
     }
 };
 //displays the character that the player chose to fight
@@ -133,6 +137,8 @@ function enemyKilled() {
         
         Game.chosenEnemy = [];
         //resets the chosen enemy array to empty
+        Game.chosenEnemyHP.text("");
+        //empties the hp of enemyChosen
         $("#chosen-enemy").empty();
         //empties what is displayed in the chosen-enemy div
     }
@@ -142,14 +148,28 @@ function enemyKilled() {
 function gameOver() {
     if (Game.chosenChar[0].hp <= 0) {
         window.alert("You've failed to become the master race.");
+        //alerts the player that they lost
+        okay = window.confirm("Play Again?");
+        //sets okay to a boolean value of true
+            if(okay){
+                location.reload();
+                //reloads the page on okay cancel does nothing
+            }
     }
 };
 //function is only run when the chosenChar has an hp value <= 0
     
 function youWin() {
-        window.alert("Congratulations, you've become the master race!")
+        window.alert("Congratulations, you've become the master race!");
+        //alerts the player that they won
+        okay = window.confirm("Play Again?");
+        //sets okay to a boolean value of true
+            if(okay){
+                location.reload();
+                //reloads the page on okay cancel does nothing
+            }
 };
-//tells the player that they won
+//tells the player that they won and asks if they want to play again
 
 $("#char-list").on("click", ".characters", function(event) {
     var clickedChar = $(this).data("number");
@@ -201,16 +221,18 @@ $("#attack-button").on("click", function(event) {
     Game.chosenEnemy[0].hp -= Game.chosenChar[0].basePowerAttack;
     //subtracts your characters built up power attack from the chosen enemies hp
     
-    var chosenCharHP = $('#chosen-char-hp');
-    var chosenEnemyHP = $('#chosen-enemy-hp');
-    chosenCharHP.text(Game.chosenChar[0].hp);
-    chosenEnemyHP.text(Game.chosenEnemy[0].hp);
+    Game.chosenCharHP.text(Game.chosenChar[0].hp);
+    //shows the new hp level of the players character after each attack
+    Game.chosenEnemyHP.text(Game.chosenEnemy[0].hp);
+    //shows the new hp level of the players enemy after each attack
     
     enemyKilled();
     
     if(Game.defeatedArr.length === 3) {
         youWin();
     }
+    
+    gameOver();
 });
 //on click event for the attack-button
 
