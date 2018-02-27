@@ -1,40 +1,36 @@
 var tardis = {
         name : "T.A.R.D.I.S.",
-        hp : 100, 
-        attack : 15,
-        defense : 15,
-        basePowerAttack : 15,
-        counterAttackPower : 17,
+        hp : 230, 
+        attack : 6,
+        startAttack : 6,
+        counterAttackPower : 11,
         id : $("#tardis"),
         src : "assets/images/tardis.png"
     };
 var angel = {
         name : "Weeping Angel",
-        hp : 500, 
-        attack : 15,
-        defense : 15,
-        basePowerAttack : 15,
-        counterAttackPower : 17,
+        hp : 220, 
+        attack : 8,
+        startAttack : 8,
+        counterAttackPower : 13,
         id : $("#tardis"),
         src : "assets/images/angel.jpg"
     };
 var dalek = {
         name : "Dalek",
-        hp : 190, 
-        attack : 15,
-        defense : 15,
-        basePowerAttack : 15,
-        counterAttackPower : 17,
+        hp : 200, 
+        attack : 7,
+        startAttack : 7,
+        counterAttackPower : 12,
         id : $("#tardis"),
         src : "assets/images/dalek.png"
     };
 var cyberman = {
         name : "Cyberman",
-        hp : 170, 
-        attack : 15,
-        defense : 15,
-        basePowerAttack : 15,
-        counterAttackPower : 17,
+        hp : 190, 
+        attack : 5,
+        startAttack : 5,
+        counterAttackPower : 10,
         id : $("#tardis"),
         src : "assets/images/cyberman.jpg"
     };
@@ -50,7 +46,13 @@ var Game = {
     defeatedArr : [],
     //holds the list of characters that the player has defeated
     chosenCharHP : $('#chosen-char-hp'),
-    chosenEnemyHP : $('#chosen-enemy-hp')
+    //sets the query selector to a variable
+    chosenEnemyHP : $('#chosen-enemy-hp'),
+    ////sets the query selector to a variable
+    attackClicked : false,
+    //set to false for first attack, then is switched to true
+    attackCounter : 0
+    //used to keep track of how much the attack should be increased by
 };
 
 function showAllCharacters() {
@@ -183,7 +185,9 @@ $("#char-list").on("click", ".characters", function(event) {
         //pushes the spliced charList to the enemiesArr
     }
     
+    //need to also empty the title for this section//////////////////////////////
     $("#char-list").empty();
+    //empties the char-list section
     
     showChosenChar();
     //displays the character that the player chose to be
@@ -214,29 +218,55 @@ $("#enemies-list").on("click", ".characters", function(event) {
 //on click event for the enemies-list div
 
 $("#attack-button").on("click", function(event) {
-    Game.chosenChar[0].hp -= Game.chosenEnemy[0].counterAttackPower;
-    //subtracts the enemies counterAttackPower value from your chosen characters hp value
-    Game.chosenChar[0].basePowerAttack += Game.chosenChar[0].attack;
-    //adds your characters attack power to your characters baseAttackPower to build power
-    Game.chosenEnemy[0].hp -= Game.chosenChar[0].basePowerAttack;
-    //subtracts your characters built up power attack from the chosen enemies hp
+    Game.attackCounter++;
     
-    Game.chosenCharHP.text(Game.chosenChar[0].hp);
-    //shows the new hp level of the players character after each attack
-    Game.chosenEnemyHP.text(Game.chosenEnemy[0].hp);
-    //shows the new hp level of the players enemy after each attack
+    if (Game.attackClicked) {
+        Game.chosenChar[0].attack = Game.chosenChar[0].startAttack * Game.attackCounter;
+        //adds your characters attack power to your characters baseAttackPower to build power
+        Game.chosenEnemy[0].hp -= Game.chosenChar[0].attack;
+        //subtracts your characters built up power attack from the chosen enemies hp
+        Game.chosenEnemyHP.text(Game.chosenEnemy[0].hp);
+        //shows the new hp level of the players enemy after each attack
+        if (Game.chosenEnemy[0].hp <= 0){
+            enemyKilled();
+        }
+        else {
+        Game.chosenChar[0].hp -= Game.chosenEnemy[0].counterAttackPower;
+        //subtracts the enemies counterAttackPower value from your chosen characters hp value
+        Game.chosenCharHP.text(Game.chosenChar[0].hp);
+        //shows the new hp level of the players character after each attack
+        }
+    }
+    //happens only after the first attack click
+    
+    else {
+        Game.chosenEnemy[0].hp -= Game.chosenChar[0].attack;
+        //subtracts your characters built up power attack from the chosen enemies hp
+        Game.chosenEnemyHP.text(Game.chosenEnemy[0].hp);
+        //shows the new hp level of the players enemy after each attack
+
+        Game.chosenChar[0].hp -= Game.chosenEnemy[0].counterAttackPower;
+        //subtracts the enemies counterAttackPower value from your chosen characters hp value
+        Game.chosenCharHP.text(Game.chosenChar[0].hp);
+        //shows the new hp level of the players character after each attack
+        Game.attackClicked = true;
+    }
+    //happens only on the first attack click
     
     enemyKilled();
     
-    if(Game.defeatedArr.length === 3) {
+    if(Game.chosenChar[0].hp < 0) {
+        gameOver();
+    }
+    else if (Game.defeatedArr.length === 3) {
         youWin();
     }
-    
-    gameOver();
+
 });
 //on click event for the attack-button
 
 $(document).ready(function () {
     showAllCharacters();
     window.alert("Choose an alien race to take over the world!");
+    /////////////write an if statement that gets rid of the title for the enemy section when player is fighting their last opponent////////////////////
 });
