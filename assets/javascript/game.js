@@ -185,7 +185,8 @@ $("#char-list").on("click", ".characters", function(event) {
         //pushes the spliced charList to the enemiesArr
     }
     
-    //need to also empty the title for this section//////////////////////////////
+    $("#title1").text("");
+    //empties the title for this section
     $("#char-list").empty();
     //empties the char-list section
     
@@ -253,9 +254,7 @@ $("#attack-button").on("click", function(event) {
     }
     //happens only on the first attack click
     
-    enemyKilled();
-    
-    if(Game.chosenChar[0].hp < 0) {
+    if(Game.chosenChar[0].hp <= 0) {
         gameOver();
     }
     else if (Game.defeatedArr.length === 3) {
@@ -268,5 +267,9 @@ $("#attack-button").on("click", function(event) {
 $(document).ready(function () {
     showAllCharacters();
     window.alert("Choose an alien race to take over the world!");
-    /////////////write an if statement that gets rid of the title for the enemy section when player is fighting their last opponent////////////////////
+    
+    if (Game.enemiesArr.length === 0) {
+        $("#title2").text("");
+    }
+    //empties the title when you are fighting your last enemy
 });
