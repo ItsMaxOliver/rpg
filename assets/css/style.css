@@ -1,3 +1,10 @@
+body{
+    background-image: url("../images/background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
 .characters {
 	height: 100px;
 	background-color: dimgray;
@@ -28,4 +35,20 @@ img {
    display: block; 
    height: 0; 
    clear: both;
+}
+h1 {
+    color: burlywood;
+    text-align: center;
+}
+
+h3 {
+    color: burlywood;
+}
+
+#chosen-char-hp {
+    color: burlywood;
+}
+
+.col-6 {
+    color: burlywood;
 }
